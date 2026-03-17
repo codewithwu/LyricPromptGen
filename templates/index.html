@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>歌词提示词生成器</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>歌词提示词生成器</h1>
+
+        <div class="section">
+            <h2>1. 选择类别</h2>
+            <div id="category-buttons" class="button-group">
+                <span class="loading">加载中...</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>2. 输入主题描述</h2>
+            <textarea id="user-input" placeholder="请输入你的歌词创作主题描述，例如：一个关于离别的故事..."></textarea>
+        </div>
+
+        <div class="section">
+            <button id="generate-btn" class="generate-btn">生成提示词</button>
+        </div>
+
+        <div class="section">
+            <h2>生成的提示词</h2>
+            <div id="result-container" class="result-container">
+                <div class="placeholder">选择类别并输入主题后，点击生成按钮查看结果</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
