@@ -76,10 +76,55 @@ document.getElementById('generate-btn').addEventListener('click', async () => {
         if (data.error) {
             resultContainer.innerHTML = `<div class="error">${data.error}</div>`;
         } else {
-            // 使用 marked.js 渲染 Markdown
-            resultContainer.innerHTML = `<div class="markdown-content">${marked.parse(data.content)}</div>`;
+            // 使用 marked.js 渲染 Markdown 并添加复制按钮
+            const content = marked.parse(data.content);
+            resultContainer.innerHTML = `
+                <div class="result-content">
+                    <div class="markdown-content">${content}</div>
+                    <button id="copy-btn" class="copy-btn generated" onclick="copyToClipboard()">复制提示词</button>
+                </div>
+            `;
         }
     } catch (error) {
         resultContainer.innerHTML = '<div class="error">生成失败，请重试</div>';
     }
 });
+
+// 复制到剪贴板功能
+function copyToClipboard() {
+    const markdownContent = document.querySelector('.markdown-content');
+    if (!markdownContent) return;
+
+    // 获取纯文本内容（去除 HTML 标签）
+    const textContent = markdownContent.textContent || markdownContent.innerText;
+
+    // 创建临时文本区域
+    const textarea = document.createElement('textarea');
+    textarea.value = textContent;
+    document.body.appendChild(textarea);
+
+    // 选择并复制
+    textarea.select();
+    textarea.setSelectionRange(0, 99999); // 兼容移动设备
+
+    try {
+        document.execCommand('copy');
+        // 显示成功提示
+        const copyBtn = document.getElementById('copy-btn');
+        const originalText = copyBtn.textContent;
+        copyBtn.textContent = '已复制!';
+        copyBtn.classList.add('copied');
+
+        // 2秒后恢复原状
+        setTimeout(() => {
+            copyBtn.textContent = originalText;
+            copyBtn.classList.remove('copied');
+        }, 2000);
+    } catch (err) {
+        console.error('复制失败:', err);
+        alert('复制失败，请手动选择并复制内容');
+    }
+
+    // 移除临时元素
+    document.body.removeChild(textarea);
+}

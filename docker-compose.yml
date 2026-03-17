@@ -1,0 +1,26 @@
+services:
+  web:
+    build: .
+    container_name: lyricpromptgen
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./LyricPrompts:/app/LyricPrompts:ro
+      - ./static:/app/static:ro
+      - ./templates:/app/templates:ro
+    environment:
+      - FLASK_ENV=production
+      - FLASK_APP=app.py
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
